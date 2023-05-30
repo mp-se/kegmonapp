@@ -1,0 +1,10 @@
+version: '3'
+services:
+  kegmonapp:
+    image: mpse2/kegmonapp
+    build: ./
+    container_name: kegmonapp
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    

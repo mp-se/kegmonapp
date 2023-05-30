@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Kegmon Dashboard</title>
+  <meta charset="utf-8">
+
+  <meta name="description" content="Kegmon Dashboard"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
+
+  <link rel="icon" href="scale.png" type="image/png">
+
+  <link href="bootstrap/bootstrap.min.css" rel="stylesheet">
+  <script src="bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="jquery/jquery.min.js"></script>
+
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="white">
+
+  <link rel="apple-touch-icon" href="scale-512.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Hello World">
+
+  <meta name="msapplication-TileImage" content="scale-512.png">
+  <meta name="msapplication-TileColor" content="#ffffff">
+
+  <link rel="manifest" href="manifest.json">
+
+  <script>
+    if ("serviceWorker" in navigator) { navigator.serviceWorker.register("sw.js"); }
+  </script>
+</head>
+
+<body class="bg-dark">
+
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="/index.html">Index</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/config.html">Config</a>
+          </li>
+      </div>
+    </div>
+  </nav>
+
+
+  <div class="container">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-2">
+
+      <div class="col">
+        <div class="card border rounded">
+          <div class="card-header text-primary" id="beer-name1"></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-8">Glasses left</div>
+              <div class="col-4" id="glass1"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">Last pour</div>
+              <div class="col-4" id="last-pour-volume1"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">Beer volume</div>
+              <div class="col-4" id="beer-volume1"></div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-8">ABV</div>
+              <div class="col-4" id="beer-abv1"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">EBC</div>
+              <div class="col-4" id="beer-ebc1"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">IBU</div>
+              <div class="col-4" id="beer-ibu1"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">Temperature</div>
+              <div class="col-4" id="temperature1"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="card border rounded">
+          <div class="card-header text-primary" id="beer-name2"></div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-8">Glasses left</div>
+              <div class="col-4" id="glass2"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">Last pour</div>
+              <div class="col-4" id="last-pour-volume2"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">Beer volume</div>
+              <div class="col-4" id="beer-volume2"></div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-8">ABV</div>
+              <div class="col-4" id="beer-abv2"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">EBC</div>
+              <div class="col-4" id="beer-ebc2"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">IBU</div>
+              <div class="col-4" id="beer-ibu2"></div>
+            </div>
+            <div class="row">
+              <div class="col-8">Temperature</div>
+              <div class="col-4" id="temperature2"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script type="text/javascript">
+    var configLoaded = false;
+    var baseURL = localStorage.getItem("kegmon-url");
+
+    console.log("Using BaseURL = " + baseURL);
+
+    if (baseURL == "" || baseURL == null) {
+      console.log("Missing configuration, redirecting to config page");
+      window.location = "/config.html";
+    }
+
+    window.onload = getStatus;
+
+    function getConfig() {
+      var url = baseURL + "/api/config";
+
+      console.log("Fetching beer configuration");
+
+      $.getJSON(url, function (cfg) {
+        console.log(cfg);
+
+        if (cfg["beer-name1"] != "") {
+          $("#beer-name1").text(cfg["beer-name1"]);
+        } else {
+          $("#beer-name1").text("Beer 1");
+        }
+
+        if (cfg["beer-name2"] != "") {
+          $("#beer-name2").text(cfg["beer-name2"]);
+        } else {
+          $("#beer-name2").text("Beer 2");
+        }
+
+        $("#beer-abv1").text(cfg["beer-abv1"]);
+        $("#beer-abv2").text(cfg["beer-abv2"]);
+
+        $("#beer-ibu1").text(cfg["beer-ibu1"]);
+        $("#beer-ibu2").text(cfg["beer-ibu2"]);
+
+        $("#beer-ebc1").text(cfg["beer-ebc1"]);
+        $("#beer-ebc2").text(cfg["beer-ebc2"]);
+      }).fail(function () {
+        console.log("Failed to fetch data from /api/config");
+      });
+    }
+
+    function getStatus() {
+      if (!configLoaded) {
+        getConfig();
+        configLoaded = true;
+      }
+
+      var url = baseURL + "/api/status";
+
+      console.log("Fetching status");
+
+      $.getJSON(url, function (cfg) {
+        console.log(cfg);
+
+        var weight_unit = " " + cfg["weight-unit"];
+        var volume_unit = " " + cfg["volume-unit"];
+        var temp_unit = " " + cfg["temp-format"];
+
+        if (cfg["beer-volume1"] !== undefined) {
+          $("#beer-volume1").text(cfg["beer-volume1"] + volume_unit);
+        }
+
+        if (cfg["beer-volume2"] !== undefined) {
+          $("#beer-volume2").text(cfg["beer-volume2"] + volume_unit);
+        }
+
+        if (cfg["glass1"] !== undefined) {
+          $("#glass1").text(cfg["glass1"]);
+        }
+
+        if (cfg["glass2"] !== undefined) {
+          $("#glass2").text(cfg["glass2"]);
+        }
+
+        if (cfg["last-pour-volume1"] !== undefined) {
+          $("#last-pour-volume1").text(cfg["last-pour-volume1"] + volume_unit);
+        }
+
+        if (cfg["last-pour-volume2"] !== undefined) {
+          $("#last-pour-volume2").text(cfg["last-pour-volume2"] + volume_unit);
+        }
+
+        if (cfg["temperature"] !== undefined) {
+          $("#temperature1").text(cfg["temperature"] + temp_unit);
+          $("#temperature2").text(cfg["temperature"] + temp_unit);
+        }
+      }).fail(function () {
+        console.log("Failed to fetch data from /app/status");
+      }).always(function () {
+      });
+    }
+
+    function start() {
+      setInterval(getStatus, 5000);
+    }
+  </script>
+
+</body>
+
+</html>
