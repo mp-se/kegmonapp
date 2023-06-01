@@ -4,7 +4,10 @@ self.addEventListener("install", evt => {
     caches.open("Demo")
     .then(cache => cache.addAll([
       "index.html",
+      "config.html",
+      "about.html",
       "manifest.json",
+      "sw.js",
       "bootstrap/bootstrap.min.css", // v5.2.3
       "bootstrap/bootstrap.min.css.map", 
       "bootstrap/bootstrap.bundle.min.js", 
