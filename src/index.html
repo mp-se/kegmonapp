@@ -172,7 +172,6 @@
       var url = baseURL + "/api/config";
 
       console.log("Fetching beer configuration");
-
       $("#status").text("Fetching beer information");
 
       $.getJSON(url, function (cfg) {
@@ -200,17 +199,18 @@
         $("#beer-ebc2").text(cfg["beer-ebc2"]);
 
         $("#status").text("Connected");
+        configLoaded = true;
 
       }).fail(function () {
         console.log("Failed to fetch data from /api/config");
         $("#status").text("Not connected");
+        start();
       });
     }
 
     function getStatus() {
       if (!configLoaded) {
         getConfig();
-        configLoaded = true;
       }
 
       var url = baseURL + "/api/status";
@@ -269,6 +269,7 @@
       }).fail(function () {
         console.log("Failed to fetch data from /app/status");
         $("#status").text("Not connected");
+        start();
       });
     }
 
@@ -277,6 +278,7 @@
     }
 
     function start() {
+      clearInterval();
       setInterval(getStatus, 5000);
     }
   </script>
