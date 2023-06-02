@@ -1,0 +1,23 @@
+{
+  "mdns": "kegscale",
+  "temp-format": "C",
+  "beer-name1": "beer A",
+  "beer-name2": "beer B",
+  "beer-fg1": 1.014,
+  "beer-fg2": 1.009,
+  "beer-abv1": 5.6,
+  "beer-abv2": 5.2,
+  "beer-ebc1": 10,
+  "beer-ebc2": 50,
+  "beer-ibu1": 41,
+  "beer-ibu2": 42,
+  "keg-weight1": 4.6,
+  "keg-weight2": 4.6,
+  "keg-volume1": 19,
+  "keg-volume2": 10,
+  "glass-volume1": 0.40, 
+  "glass-volume2": 0.33, 
+  "weight-unit": "kg",
+  "volume-unit": "cl",
+  "display-layout": 0
+}
