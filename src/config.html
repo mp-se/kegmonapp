@@ -81,6 +81,15 @@
                         </div>
 
                         <div class="row mb-4">
+                            <label for="poll-interval" class="col-sm-4 col-form-label">Poll interval (s)</label>
+                            <div class="col-sm-8">
+                              <input type="number" min="2" max="60" step="1" class="form-control" name="kegmon-interval" id="kegmon-interval" placeholder="5"
+                                data-bs-toggle="tooltip"
+                                title="Poll interval in seconds">
+                            </div>
+                        </div>            
+
+                        <div class="row mb-4">
                             <div class="col-sm-8 offset-sm-4">
                                 <button type="submit" class="btn btn-primary" id="save-btn" data-bs-toggle="tooltip"
                                     title="Save changes">Save</button>
@@ -95,18 +104,38 @@
             window.onload = loadConfig;
 
             $("#save-btn").click(function (e) {
+                var url = $("#kegmon-url").val();
+                var interval = $("#kegmon-interval").val();
+
                 console.log("Saving configuration to local storage");
-                localStorage.setItem("kegmon-url", $("#kegmon-url").val());
+                console.log("URL = " + url);
+                console.log("Interval = " + interval);
+
+                localStorage.setItem("kegmon-url", url);
+                localStorage.setItem("kegmon-interval", interval);
             });
 
             function loadConfig() {
-                console.log("Loading configuration from local storage");
                 var url = localStorage.getItem("kegmon-url");
+                var interval = localStorage.getItem("kegmon-interval");
 
-                if (url != null)
+                console.log("Loading configuration from local storage");
+                console.log("URL = " + url);
+                console.log("Interval = " + interval);
+
+                if (url != null)  {
                     $("#kegmon-url").val(url);
-                else
+                }
+                else {
                     console.log("No URL has been saved.");
+                }
+
+                if (interval != null) {
+                    $("#kegmon-interval").val(interval);
+                }
+                else {
+                    console.log("No interval has been saved.");
+                }
             }
         </script>
 </body>

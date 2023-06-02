@@ -5,7 +5,7 @@
   <title>Kegmon Dashboard</title>
   <meta charset="utf-8">
 
-  <meta name="description" content="Kegmon Dashboard"> 
+  <meta name="description" content="Kegmon Dashboard">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5">
 
   <link rel="icon" href="scale.png" type="image/png">
@@ -50,9 +50,36 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/about.html">About</a>
-        </li>
-</div>
+          </li>
+      </div>
+      <button type="button" id="status-light" class="btn btn-warning">&nbsp;</button>
+      <button type="button" id="on" class="btn btn-success hide d-none">&checkmark; &ThickSpace;</button>
+      <button type="button" id="off" class="btn btn-danger hide d-none">&CircleMinus;</button>
     </div>
+
+    <script>
+      function setOnline(s) {
+        console.log("StatusIcon = Online");
+        $("#status").text(s);
+        $("#status-light").removeClass("btn-warning").removeClass("btn-success").removeClass("btn-danger");
+        $("#status-light").addClass("btn-success");
+      }
+
+      function setOffline(s) {
+        console.log("StatusIcon = Offline");
+        $("#status").text(s);
+        $("#status-light").removeClass("btn-warning").removeClass("btn-success").removeClass("btn-danger");
+        $("#status-light").addClass("btn-danger");
+       }
+
+      function setConnecting(s) {
+        console.log("StatusIcon = Connecting");
+        $("#status").text(s);
+        $("#status-light").removeClass("btn-warning").removeClass("btn-success").removeClass("btn-danger");
+        $("#status-light").addClass("btn-warning");
+      }
+
+    </script>
   </nav>
 
   <div class="container">
@@ -66,7 +93,8 @@
               <div class="col-6">Keg</div>
               <div class="col-6">
                 <div class="progress">
-                  <div class="progress-bar" id="beer-percent1" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar" id="beer-percent1" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                    aria-valuemax="100"></div>
                 </div>
               </div>
             </div>
@@ -83,7 +111,8 @@
               <div class="col-6" id="beer-volume1"></div>
             </div>
             <hr>
-            <div class="row"><div class="col-6">ABV</div>
+            <div class="row">
+              <div class="col-6">ABV</div>
               <div class="col-6" id="beer-abv1"></div>
             </div>
             <div class="row">
@@ -110,7 +139,8 @@
               <div class="col-6">Keg</div>
               <div class="col-6">
                 <div class="progress">
-                  <div class="progress-bar" id="beer-percent2" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                  <div class="progress-bar" id="beer-percent2" role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                    aria-valuemax="100"></div>
                 </div>
               </div>
             </div>
@@ -127,7 +157,8 @@
               <div class="col-6" id="beer-volume2"></div>
             </div>
             <hr>
-            <div class="row"><div class="col-6">ABV</div>
+            <div class="row">
+              <div class="col-6">ABV</div>
               <div class="col-6" id="beer-abv2"></div>
             </div>
             <div class="row">
@@ -149,21 +180,28 @@
     </div>
 
 
-    <div class="container">    
+    <div class="container">
       <div class="text-primary text-center" id="status"></div>
     </div>
-  
+
   </div>
 
   <script type="text/javascript">
     var configLoaded = false;
     var baseURL = localStorage.getItem("kegmon-url");
+    var pollInterval = Number.parseInt( localStorage.getItem("kegmon-interval") );
 
     console.log("Using BaseURL = " + baseURL);
+    console.log("Using PollInterval = " + pollInterval);
 
     if (baseURL == "" || baseURL == null) {
       console.log("Missing configuration, redirecting to config page");
       window.location = "/config.html";
+    }
+
+    if(isNaN(pollInterval)) {
+      console.log("Poll interval undefined, using default");
+      pollInterval = 5;
     }
 
     window.onload = getStatus;
@@ -172,7 +210,7 @@
       var url = baseURL + "/api/config";
 
       console.log("Fetching beer configuration");
-      $("#status").text("Fetching beer information");
+      setConnecting("Fetching beer information");
 
       $.getJSON(url, function (cfg) {
         console.log(cfg);
@@ -198,12 +236,11 @@
         $("#beer-ebc1").text(cfg["beer-ebc1"]);
         $("#beer-ebc2").text(cfg["beer-ebc2"]);
 
-        $("#status").text("Connected");
+        setOnline("Connected");
         configLoaded = true;
-
       }).fail(function () {
         console.log("Failed to fetch data from /api/config");
-        $("#status").text("Not connected");
+        setOffline("Not connected");
         start();
       });
     }
@@ -216,8 +253,7 @@
       var url = baseURL + "/api/status";
 
       console.log("Fetching status");
-
-      $("#status").text("Fetching status");
+      setConnecting("Fetching status");
 
       $.getJSON(url, function (cfg) {
         console.log(cfg);
@@ -255,31 +291,34 @@
           $("#temperature2").text(cfg["temperature"] + temp_unit);
         }
 
-        if( cfg["scale-weight1"] === undefined ) {
+        if (cfg["scale-weight1"] === undefined) {
         } else {
-          setProgress(Math.round((cfg["beer-volume1"]/cfg["keg-volume1"])*100), "#beer-percent1");
+          setProgress(Math.round((cfg["beer-volume1"] / cfg["keg-volume1"]) * 100), "#beer-percent1");
         }
 
-        if( cfg["scale-weight2"] === undefined ) {
+        if (cfg["scale-weight2"] === undefined) {
         } else {
-          setProgress(Math.round((cfg["beer-volume2"]/cfg["keg-volume2"])*100), "#beer-percent2");
+          setProgress(Math.round((cfg["beer-volume2"] / cfg["keg-volume2"]) * 100), "#beer-percent2");
         }
 
-        $("#status").text("Connected");
+        setOnline("Connected");
+
       }).fail(function () {
         console.log("Failed to fetch data from /app/status");
-        $("#status").text("Not connected");
+        setOffline("Not connected");
         start();
       });
     }
 
     function setProgress(val, id) {
-      $(id).css('width', val+'%').attr('aria-valuenow', val).text(val + "%");
+      $(id).css('width', val + '%').attr('aria-valuenow', val).text(val + "%");
     }
 
     function start() {
+      console.log("Setting poll interval = " + pollInterval);
+
       clearInterval();
-      setInterval(getStatus, 5000);
+      setInterval(getStatus, pollInterval * 1000);
     }
   </script>
 
