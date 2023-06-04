@@ -72,7 +72,7 @@
                         <input type="text" name="section" value="#headingDev" hidden>
 
                         <div class="row mb-4">
-                            <label for="kegmon-url" class="col-sm-4 col-form-label">Device name</label>
+                            <label for="mdns" class="col-sm-4 col-form-label">Device name</label>
                             <div class="col-sm-8">
                                 <input type="text" maxlength="30" class="form-control" name="kegmon-url" id="kegmon-url"
                                     placeholder="http://my-device" data-bs-toggle="tooltip"
@@ -81,22 +81,11 @@
                         </div>
 
                         <div class="row mb-4">
-                            <label for="kegmon-interval" class="col-sm-4 col-form-label">Poll interval (s)</label>
+                            <label for="poll-interval" class="col-sm-4 col-form-label">Poll interval (s)</label>
                             <div class="col-sm-8">
                                 <input type="number" min="2" max="60" step="1" class="form-control"
                                     name="kegmon-interval" id="kegmon-interval" placeholder="5" data-bs-toggle="tooltip"
                                     title="Poll interval in seconds">
-                            </div>
-                        </div>
-
-                        <div class="row mb-4">
-                            <label for="kegmon-layout" class="col-sm-4 col-form-label">Card layout</label>
-                            <div class="col-sm-8">
-                                <select class="form-select" id="kegmon-layout" name="kegmon-layout"
-                                    data-bs-toggle="tooltip" title="Select card layout">
-                                    <option value="1">Default</option>
-                                    <option value="2">Images</option>
-                                </select>
                             </div>
                         </div>
 
@@ -114,25 +103,20 @@
         <script src="kegmonapp.js"></script>
 
         <script type="text/javascript">
-            console.log("Loading configuration from local storage");
-            const appcfg = new KegmonConfig;
-            appcfg.load();
-            updateForm();
+            console.log("Testing taplist classes");
+            const tapItem1 = new TapListItem("beer", "style", "brewer", "desc", 1, 2, 3);
+            const tapItem2 = new TapListItem("beer2", "style2", "brewer2", "desc2", 4, 5, 6);
+            // console.log(tapItem1.toString());
+            // console.log(tapItem2.toString());
 
-            $("#save-btn").click(function (e) {
-                console.log("Saving configuration to local storage");
-                appcfg.url = $("#kegmon-url").val();
-                appcfg.interval = Number.parseInt($("#kegmon-interval").val());
-                appcfg.layout = $("#kegmon-layout").val();
-                appcfg.save();
-            });
+            const tapList = new TapList();
+            console.log(tapList.getTapCount());
+            tapList.addTap(tapItem1);
+            tapList.addTap(tapItem2);
 
-            function updateForm() {
-                console.log("Updating form with configuration");
-                $("#kegmon-url").val(appcfg.url);
-                $("#kegmon-interval").val(appcfg.interval);
-                $("#kegmon-layout").val(appcfg.layout);
-            }
+            console.log(tapList.getTaps());
+            console.log(tapList.getTapCount());
+
         </script>
 </body>
 

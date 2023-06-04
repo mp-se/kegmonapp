@@ -83,102 +83,11 @@
   </nav>
 
   <div class="container">
-    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-2">
+    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-2" id="page-body">
 
-      <div class="col">
-        <div class="card border rounded">
-          <div class="card-header text-primary" id="beer-name1"></div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-6">Keg</div>
-              <div class="col-6">
-                <div class="progress">
-                  <div class="progress-bar" id="beer-percent1" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                    aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">Glasses left</div>
-              <div class="col-6" id="glass1"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">Last pour</div>
-              <div class="col-6" id="last-pour-volume1"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">Beer volume</div>
-              <div class="col-6" id="beer-volume1"></div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-6">ABV</div>
-              <div class="col-6" id="beer-abv1"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">EBC</div>
-              <div class="col-6" id="beer-ebc1"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">IBU</div>
-              <div class="col-6" id="beer-ibu1"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">Temperature</div>
-              <div class="col-6" id="temperature1"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col">
-        <div class="card border rounded">
-          <div class="card-header text-primary" id="beer-name2"></div>
-          <div class="card-body">
-            <div class="row">
-              <div class="col-6">Keg</div>
-              <div class="col-6">
-                <div class="progress">
-                  <div class="progress-bar" id="beer-percent2" role="progressbar" aria-valuenow="0" aria-valuemin="0"
-                    aria-valuemax="100"></div>
-                </div>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-6">Glasses left</div>
-              <div class="col-6" id="glass2"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">Last pour</div>
-              <div class="col-6" id="last-pour-volume2"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">Beer volume</div>
-              <div class="col-6" id="beer-volume2"></div>
-            </div>
-            <hr>
-            <div class="row">
-              <div class="col-6">ABV</div>
-              <div class="col-6" id="beer-abv2"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">EBC</div>
-              <div class="col-6" id="beer-ebc2"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">IBU</div>
-              <div class="col-6" id="beer-ibu2"></div>
-            </div>
-            <div class="row">
-              <div class="col-6">Temperature</div>
-              <div class="col-6" id="temperature2"></div>
-            </div>
-          </div>
-        </div>
-      </div>
+      <!-- cards will be added by scripts -->
 
     </div>
-
 
     <div class="container">
       <div class="text-primary text-center" id="status"></div>
@@ -190,7 +99,9 @@
 
   <script type="text/javascript">
     var deviceConfigLoaded = false;
-
+    var kegmonTapList = [];
+    var cardTemplate = "";
+    
     const appcfg = new KegmonConfig;
     appcfg.load();
     appcfg.dump()
@@ -200,7 +111,29 @@
       window.location = "/config.html";
     }
 
+    getCardTemplate();
     window.onload = getDeviceStatus;
+
+    function getCardTemplate() {
+      var url = "card" + appcfg.layout + ".html";
+
+      console.log("Fetching card template, " + url);
+
+      $.get(url, function (data) {
+        cardTemplate = data;
+        // console.log(cardTemplate);
+        createCards();
+      }).fail(function () {
+        console.log("Failed to fetch data from " + url);
+      });
+    }
+
+    function createCards() {
+      var main = document.getElementById("page-body");
+      var card1 = cardTemplate.replaceAll("${ID}", "1");
+      var card2 = cardTemplate.replaceAll("${ID}", "2");
+      main.innerHTML = card1 + card2; 
+    }
 
     function getDeviceConfig() {
       var url = appcfg.url + "/api/config";
@@ -211,29 +144,26 @@
       $.getJSON(url, function (cfg) {
         console.log(cfg);
 
-        if (cfg["beer-name1"] != "") {
-          $("#beer-name1").text(cfg["beer-name1"]);
-        } else {
-          $("#beer-name1").text("Beer 1");
-        }
+        // Convert the config data to taplist items
+        kegmonTapList = kegmonToTaplist(cfg);
+        console.log(kegmonTapList);
 
-        if (cfg["beer-name2"] != "") {
-          $("#beer-name2").text(cfg["beer-name2"]);
-        } else {
-          $("#beer-name2").text("Beer 2");
-        }
+        $("#beer-name1").text(kegmonTapList[0].beer);
+        $("#beer-abv1").text(kegmonTapList[0].abv);
+        $("#beer-ibu1").text(kegmonTapList[0].ibu);
+        $("#beer-ebc1").text(kegmonTapList[0].ebc);
 
-        $("#beer-abv1").text(cfg["beer-abv1"]);
-        $("#beer-abv2").text(cfg["beer-abv2"]);
+        $("#beer-name2").text(kegmonTapList[1].beer);
+        $("#beer-abv2").text(kegmonTapList[1].abv);
+        $("#beer-ibu2").text(kegmonTapList[1].ibu);
+        $("#beer-ebc2").text(kegmonTapList[1].ebc);
 
-        $("#beer-ibu1").text(cfg["beer-ibu1"]);
-        $("#beer-ibu2").text(cfg["beer-ibu2"]);
-
-        $("#beer-ebc1").text(cfg["beer-ebc1"]);
-        $("#beer-ebc2").text(cfg["beer-ebc2"]);
+        $("#beer-image1").attr("src", "images/beer-" + kegmonTapList[0].getImagePrefix());
+        $("#beer-image2").attr("src", "images/beer-" + kegmonTapList[1].getImagePrefix());
 
         setOnline("Connected");
         deviceConfigLoaded = true;
+
       }).fail(function () {
         console.log("Failed to fetch data from /api/config");
         setOffline("Not connected");
