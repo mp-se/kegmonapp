@@ -100,42 +100,25 @@
             </div>
         </div>
 
+        <script src="kegmonapp.js"></script>
+
         <script type="text/javascript">
-            window.onload = loadConfig;
+            console.log("Loading configuration from local storage");
+            const appcfg = new KegmonConfig;
+            appcfg.load();
+            updateForm();
 
             $("#save-btn").click(function (e) {
-                var url = $("#kegmon-url").val();
-                var interval = $("#kegmon-interval").val();
-
                 console.log("Saving configuration to local storage");
-                console.log("URL = " + url);
-                console.log("Interval = " + interval);
-
-                localStorage.setItem("kegmon-url", url);
-                localStorage.setItem("kegmon-interval", interval);
+                appcfg.url = $("#kegmon-url").val();
+                appcfg.interval = Number.parseInt($("#kegmon-interval").val());
+                appcfg.save();
             });
 
-            function loadConfig() {
-                var url = localStorage.getItem("kegmon-url");
-                var interval = localStorage.getItem("kegmon-interval");
-
-                console.log("Loading configuration from local storage");
-                console.log("URL = " + url);
-                console.log("Interval = " + interval);
-
-                if (url != null)  {
-                    $("#kegmon-url").val(url);
-                }
-                else {
-                    console.log("No URL has been saved.");
-                }
-
-                if (interval != null) {
-                    $("#kegmon-interval").val(interval);
-                }
-                else {
-                    console.log("No interval has been saved.");
-                }
+            function updateForm() {
+                console.log("Updating form with configuration");
+                $("#kegmon-url").val(appcfg.url);
+                $("#kegmon-interval").val(appcfg.interval);
             }
         </script>
 </body>

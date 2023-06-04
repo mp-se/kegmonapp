@@ -70,7 +70,7 @@
         $("#status").text(s);
         $("#status-light").removeClass("btn-warning").removeClass("btn-success").removeClass("btn-danger");
         $("#status-light").addClass("btn-danger");
-       }
+      }
 
       function setConnecting(s) {
         console.log("StatusIcon = Connecting");
@@ -186,28 +186,24 @@
 
   </div>
 
+  <script src="kegmonapp.js"></script>
+
   <script type="text/javascript">
-    var configLoaded = false;
-    var baseURL = localStorage.getItem("kegmon-url");
-    var pollInterval = Number.parseInt( localStorage.getItem("kegmon-interval") );
+    var deviceConfigLoaded = false;
 
-    console.log("Using BaseURL = " + baseURL);
-    console.log("Using PollInterval = " + pollInterval);
+    const appcfg = new KegmonConfig;
+    appcfg.load();
+    appcfg.dump()
 
-    if (baseURL == "" || baseURL == null) {
+    if (!appcfg.hasValidURL()) {
       console.log("Missing configuration, redirecting to config page");
       window.location = "/config.html";
     }
 
-    if(isNaN(pollInterval)) {
-      console.log("Poll interval undefined, using default");
-      pollInterval = 5;
-    }
+    window.onload = getDeviceStatus;
 
-    window.onload = getStatus;
-
-    function getConfig() {
-      var url = baseURL + "/api/config";
+    function getDeviceConfig() {
+      var url = appcfg.url + "/api/config";
 
       console.log("Fetching beer configuration");
       setConnecting("Fetching beer information");
@@ -237,7 +233,7 @@
         $("#beer-ebc2").text(cfg["beer-ebc2"]);
 
         setOnline("Connected");
-        configLoaded = true;
+        deviceConfigLoaded = true;
       }).fail(function () {
         console.log("Failed to fetch data from /api/config");
         setOffline("Not connected");
@@ -245,12 +241,12 @@
       });
     }
 
-    function getStatus() {
-      if (!configLoaded) {
-        getConfig();
+    function getDeviceStatus() {
+      if (!deviceConfigLoaded) {
+        getDeviceConfig();
       }
 
-      var url = baseURL + "/api/status";
+      var url = appcfg.url + "/api/status";
 
       console.log("Fetching status");
       setConnecting("Fetching status");
@@ -315,10 +311,10 @@
     }
 
     function start() {
-      console.log("Setting poll interval = " + pollInterval);
+      console.log("Setting poll interval = " + appcfg.interval);
 
       clearInterval();
-      setInterval(getStatus, pollInterval * 1000);
+      setInterval(getDeviceStatus, appcfg.interval * 1000);
     }
   </script>
 
