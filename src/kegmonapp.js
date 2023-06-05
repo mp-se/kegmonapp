@@ -58,10 +58,8 @@ class KegmonConfig {
 }
 
 function kegmonToTaplist(json) {
-
-  var tap1 = new TapListItem(json["beer-name1"], "", "", "", json["beer-abv1"], json["beer-ebc1"], json["beer-ibu1"]);
-  var tap2 = new TapListItem(json["beer-name2"], "", "", "", json["beer-abv2"], json["beer-ebc2"], json["beer-ibu2"]);
-
+  var tap1 = new TapListItem(json["beer-name1"], "", "", "", json["beer-abv1"], json["beer-ebc1"], json["beer-ibu1"], "", 0, "glasses");
+  var tap2 = new TapListItem(json["beer-name2"], "", "", "", json["beer-abv2"], json["beer-ebc2"], json["beer-ibu2"], "", 0, "glasses");
   var tapList = [ tap1, tap2 ];
   return tapList;
 }
@@ -74,8 +72,11 @@ class TapListItem {
   abv = 0;
   ebc = 0;
   ibu = 0;
+  date = "";
+  amount = 0;
+  unit = "glasses";
 
-  constructor(beer, style, brewer, description, abv, ebc, ibu) {
+  constructor(beer, style, brewer, description, abv, ebc, ibu, date, amount, unit) {
     this.beer = beer;
     this.style = style;
     this.brewer = brewer;
@@ -83,6 +84,9 @@ class TapListItem {
     this.abv = abv;
     this.ebc = ebc;
     this.ibu = ibu;
+    this.date = date;
+    this.amount = amount;
+    this.unit = unit;
   }
 
   getImagePrefix() {
@@ -118,6 +122,9 @@ class TapListItem {
     json["abv"] = this.abv;
     json["ebc"] = this.ebc;
     json["ibu"] = this.ibu;
+    json["date"] = this.date;
+    json["amount"] = this.amount;
+    json["unit"] = this.unit;
     return json;
   } 
 
@@ -131,11 +138,16 @@ class TapListItem {
     console.log(s);
     var json = JSON.parse(s);
 
-    if(json["url"] != undefined)
-      this.url = json["url"];
-    
-      if(json["interval"] != undefined)
-        this.interval = json["interval"];  
+    this.beer = json["beer"];
+    this.style = json["style"];
+    this.brewer = json["brewer"] ;
+    this.description = json["description"];
+    this.abv = json["abv"];
+    this.ebc = json["ebc"];
+    this.ibu = json["ibu"];
+    this.date = json["date"];
+    this.amount = json["amount"];
+    this.unit = json["unit"];
   }
 }
 
