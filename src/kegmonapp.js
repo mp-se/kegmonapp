@@ -4,6 +4,7 @@ class KegmonConfig {
   layout = "1";
   brewfatherApiKey = "";
   brewfatherUserKey = "";
+  inventoryColumns = 1;
 
   save() {
     var s = this.toString();
@@ -35,6 +36,7 @@ class KegmonConfig {
     json["layout"] = this.layout;  
     json["brewfather-apikey"] = this.brewfatherApiKey;
     json["brewfather-userkey"] = this.brewfatherUserKey;
+    json["inventory-columns"] = this.inventoryColumns;
     // console.log("toString() " + JSON.stringify(json));
     return JSON.stringify(json);
   }
@@ -57,15 +59,19 @@ class KegmonConfig {
 
     if(json["brewfather-userkey"] != undefined)
       this.brewfatherUserKey = json["brewfather-userkey"];  
+
+    if(json["inventory-columns"] != undefined)
+      this.inventoryColumns = json["inventory-columns"];  
   }
 
   dump() {
     console.log("KegmonConfig::dump, showing kegmonapp settings.");
     console.log("URL: " + this.url + " (" + typeof(this.url) + ")");
     console.log("Interval: " + this.interval + " (" + typeof(this.interval) + ")");
-    console.log("Layout: " + this.layout + " (" + typeof(this.layout) + ")");
+    console.log("Dashboard layout: " + this.layout + " (" + typeof(this.layout) + ")");
     console.log("Brewfather ApiKey: " + this.brewfatherApiKey + " (" + typeof(this.brewfatherApiKey) + ")");
     console.log("Brewfather UserKey: " + this.brewfatherUserKey + " (" + typeof(this.brewfatherUserKey) + ")");
+    console.log("Inventory columns: " + this.inventoryColumns + " (" + typeof(this.inventoryColumns) + ")");
   }
 }
 
@@ -107,20 +113,30 @@ class TapListItem {
     */
     var prefix = "color-0.png";
 
-    if(this.ebc >= 2 && this.ebc <= 3)
-      prefix = "color-2.png";
-    else if(this.ebc > 3 && this.ebc <= 8)
+    if(this.ebc >= 2 && this.ebc <= 5)
       prefix = "color-4.png";
-    else if(this.ebc > 8 && this.ebc <= 16)
+    else if(this.ebc > 5 && this.ebc <= 7)
+      prefix = "color-6.png";
+    else if(this.ebc > 7 && this.ebc <= 10)
+      prefix = "color-8.png";
+    else if(this.ebc > 10 && this.ebc <= 14)
       prefix = "color-12.png";
-    else if(this.ebc > 16 && this.ebc <= 21)
-      prefix = "color-18.png";
-    else if(this.ebc > 21 && this.ebc <= 27)
-      prefix = "color-24.png";
-    else if(this.ebc > 27 && this.ebc <= 35)
-      prefix = "color-30.png";
-    else if(this.ebc > 35)
-      prefix = "color-40.png";
+    else if(this.ebc > 14 && this.ebc <= 18)
+      prefix = "color-16.png";
+    else if(this.ebc > 18 && this.ebc <= 23)
+      prefix = "color-20.png";
+    else if(this.ebc > 23 && this.ebc <= 29)
+      prefix = "color-26.png";
+    else if(this.ebc > 29 && this.ebc <= 35)
+      prefix = "color-33.png";
+    else if(this.ebc > 35 && this.ebc <= 43)
+      prefix = "color-39.png";
+      else if(this.ebc > 43 && this.ebc <= 52)
+      prefix = "color-47.png";
+      else if(this.ebc > 52 && this.ebc <= 63)
+      prefix = "color-57.png";
+    else if(this.ebc > 63)
+      prefix = "color-69.png";
 
     return prefix;
   }

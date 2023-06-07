@@ -54,7 +54,7 @@
                         <a class="nav-link" href="/about.html">About</a>
                     </li>
             </div>
-            <button type="button" id="load-taplist-btn" class="btn btn-warning">Load taplist</button>
+            <button type="button" id="load-taplist-btn" class="btn btn-warning">Load inventory</button>
         </div>
     </nav>
 
@@ -108,7 +108,7 @@
 
                                         <div class="row">
                                             <div class="col col-sm-3">
-                                                <img src="images/beer-${image}" width="50"><img>
+                                                <img src="images/beer-${image}" width="100"><img>
                                             </div>
                                             <div class="col">
                                                 <div class="row">
@@ -147,7 +147,7 @@
                             </div>
                         </div>
 
-                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-2 g-2" id="page-body">
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-1 g-2" id="page-body">
 
                             <!-- Cards will be added to this section using javascript -->
 
@@ -166,6 +166,20 @@
             const appcfg = new KegmonConfig;
             appcfg.load();
             appcfg.dump()
+
+            switch(appcfg.inventoryColumns) {
+                case 1:
+                default:
+                break;
+
+                case 2:
+                    $("#page-body").removeClass("row-cols-md-1").addClass("row-cols-md-2");
+                break;
+
+                case 3:
+                    $("#page-body").removeClass("row-cols-md-1").addClass("row-cols-md-3");
+                break;
+            }
 
             const tapList = new TapList;
             var template = document.getElementById("template");
@@ -208,6 +222,7 @@
                             var dt = new Date(res[i]['bottlingDate']).toISOString().substring(0, 10);
                             var notes = "";
                             var ibu = 0;
+                            var ebc = 0;
 
                             if (res[i]['tasteNotes'] !== undefined)
                                 notes = res[i]['tasteNotes'].replace("\n", "");
@@ -215,7 +230,10 @@
                             if (res[i]['estimatedIbu'] !== undefined)
                                 ibu = res[i]['estimatedIbu'];
 
-                            var tap = new TapListItem(name, res[i]['recipe']['style']['name'], res[i]['brewer'], notes, res[i]['measuredAbv'], res[i]['estimatedColor'], ibu, dt, 0, "glasses");
+                            if (res[i]['estimatedColor'] !== undefined)
+                                ebc = res[i]['estimatedColor'];
+
+                            var tap = new TapListItem(name, res[i]['recipe']['style']['name'], res[i]['brewer'], notes, res[i]['measuredAbv'], ebc, ibu, dt, 0, "glasses");
                             tapList.addTap(tap);
                         }
 
