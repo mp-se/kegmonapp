@@ -10,7 +10,7 @@ This is an addon for the Kegmon project. This acts as an installable web applica
 
 > Requires v0.7 or newer or the web browser will block access due to CORS.
 
-The application is shipped as a docker image to allow for installation or access.
+The application is shipped as a docker image to allow for installation or access. Refer to: https://hub.docker.com/repository/docker/mpse2/kegmonapp/general
 
 > Due to security limitation in all browsers the installation needs to be done via http:// since the kegmon does not support SSL. Its not allowed to install the app via SSL and then access non SSL resources, all browsers will block this attempt.
 
