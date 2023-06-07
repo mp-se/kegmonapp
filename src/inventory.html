@@ -54,7 +54,7 @@
                         <a class="nav-link" href="/about.html">About</a>
                     </li>
             </div>
-            <button type="button" id="load-taplist-btn" class="btn btn-warning">Load taplist</button>
+            <button type="button" id="load-taplist-btn" class="btn btn-warning">Load inventory</button>
         </div>
     </nav>
 
@@ -222,6 +222,7 @@
                             var dt = new Date(res[i]['bottlingDate']).toISOString().substring(0, 10);
                             var notes = "";
                             var ibu = 0;
+                            var ebc = 0;
 
                             if (res[i]['tasteNotes'] !== undefined)
                                 notes = res[i]['tasteNotes'].replace("\n", "");
@@ -229,7 +230,10 @@
                             if (res[i]['estimatedIbu'] !== undefined)
                                 ibu = res[i]['estimatedIbu'];
 
-                            var tap = new TapListItem(name, res[i]['recipe']['style']['name'], res[i]['brewer'], notes, res[i]['measuredAbv'], res[i]['estimatedColor'], ibu, dt, 0, "glasses");
+                            if (res[i]['estimatedColor'] !== undefined)
+                                ebc = res[i]['estimatedColor'];
+
+                            var tap = new TapListItem(name, res[i]['recipe']['style']['name'], res[i]['brewer'], notes, res[i]['measuredAbv'], ebc, ibu, dt, 0, "glasses");
                             tapList.addTap(tap);
                         }
 

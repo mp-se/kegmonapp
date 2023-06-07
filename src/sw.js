@@ -10,15 +10,20 @@ self.addEventListener("install", evt => {
       "manifest.json",
       "kegmonapp.js",
       "sw.js",
-      "beer-${image}", // dummy image used by template
+      "beer-${image}", // dummy image used by template, will not be used
       "images/beer-color-0.png",
-      "images/beer-color-2.png",
       "images/beer-color-4.png",
+      "images/beer-color-6.png",
+      "images/beer-color-8.png",
       "images/beer-color-12.png",
-      "images/beer-color-18.png",
-      "images/beer-color-24.png",
-      "images/beer-color-30.png",
-      "images/beer-color-40.png",
+      "images/beer-color-16.png",
+      "images/beer-color-20.png",
+      "images/beer-color-26.png",
+      "images/beer-color-33.png",
+      "images/beer-color-39.png",
+      "images/beer-color-47.png",
+      "images/beer-color-57.png",
+      "images/beer-color-69.png",
       "bootstrap/bootstrap.min.css", // v5.2.3
       "bootstrap/bootstrap.min.css.map", // v5.2.3
       "bootstrap/bootstrap.bundle.min.js", // v5.2.3
