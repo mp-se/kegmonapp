@@ -1,5 +1,5 @@
 
-![download](https://img.shields.io/github/downloads/mp-se/kegmonapp/total) 
+![download](https://img.shields.io/docker/pulls/mpse2/kegmonapp) 
 ![release](https://img.shields.io/github/v/release/mp-se/kegmonapp?label=latest%20release)
 ![issues](https://img.shields.io/github/issues/mp-se/kegmonapp)
 ![pr](https://img.shields.io/github/issues-pr/mp-se/kegmonapp)
@@ -17,8 +17,11 @@ The application is shipped as a docker image to allow for installation or access
 
 # Features
 
-* Show a html5 dashboard on any device based where data is fetched from the kegmon device. This will allow for a larger screen than the oled / lcd options.
-* Show an inventory of your beers from Brewfather. 
+* Web based dashboard on any device based where data is fetched from the kegmon device. This will allow for a larger screen than the oled / lcd options.
+* Can be installed as an app via the browser (using PWA, Portable Web Application standard).
+* Show an inventory of your beers from Brewfather.
+* All data is stored on the local browser.
+ 
 # Brewfather integration
 
 The brewfather integration will fetch your finished brews and list them on a page (they will be displayed in brew order, newest on top). Archived brews will be ignored. 
