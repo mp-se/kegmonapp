@@ -46,6 +46,9 @@
             <a class="nav-link" href="/index.html">Index</a>
           </li>
           <li class="nav-item">
+            <a class="nav-link" href="/inventory.html">Inventory</a>
+          </li>
+          <li class="nav-item">
             <a class="nav-link" href="/config.html">Config</a>
           </li>
           <li class="nav-item">
@@ -53,8 +56,6 @@
           </li>
       </div>
       <button type="button" id="status-light" class="btn btn-warning">&nbsp;</button>
-      <button type="button" id="on" class="btn btn-success hide d-none">&checkmark; &ThickSpace;</button>
-      <button type="button" id="off" class="btn btn-danger hide d-none">&CircleMinus;</button>
     </div>
 
     <script>
@@ -209,6 +210,8 @@
   <script src="kegmonapp.js"></script>
 
   <script type="text/javascript">
+    console.log("Initializing index.html");
+
     var deviceConfigLoaded = false;
     var kegmonTapList = [];
     var cardTemplate = "";
@@ -226,8 +229,8 @@
     window.onload = getDeviceStatus;
 
     function getCardTemplate() {
+      console.log("Using card template" + appcfg.layout);
       cardTemplate = document.getElementById("template" + appcfg.layout).innerHTML;
-      console.log(cardTemplate);
       createCards();
     }
 
@@ -249,7 +252,7 @@
 
         // Convert the config data to taplist items
         kegmonTapList = kegmonToTaplist(cfg);
-        console.log(kegmonTapList);
+        // console.log(kegmonTapList);
 
         $("#beer-name1").text(kegmonTapList[0].beer);
         $("#beer-abv1").text(kegmonTapList[0].abv);
@@ -263,6 +266,14 @@
 
         $("#beer-image1").attr("src", "images/beer-" + kegmonTapList[0].getImagePrefix());
         $("#beer-image2").attr("src", "images/beer-" + kegmonTapList[1].getImagePrefix());
+
+        if( appcfg.brewfatherApiKey == "" && appcfg.brewfatherUserKey == "") {
+          console.log("Copying brewfather keys from kegmon");
+          appcfg.brewfatherApiKey = cfg["brewfather-apikey"];
+          appcfg.brewfatherUserKey = cfg["brewfather-userkey"];
+          appcfg.save();
+          appcfg.dump();
+        }
 
         setOnline("Connected");
         deviceConfigLoaded = true;

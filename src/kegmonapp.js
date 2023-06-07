@@ -2,12 +2,14 @@ class KegmonConfig {
   url = "http://localhost";
   interval = 5;
   layout = "1";
+  brewfatherApiKey = "";
+  brewfatherUserKey = "";
 
   save() {
     var s = this.toString();
-    console.log(s);
+    // console.log(s);
     localStorage.setItem("kegmonapp", s);
-    this.dump();
+    // this.dump();
   }
 
   load() {
@@ -31,12 +33,14 @@ class KegmonConfig {
     json["url"] = this.url;
     json["interval"] = this.interval;  
     json["layout"] = this.layout;  
-    console.log("toString() " + JSON.stringify(json));
+    json["brewfather-apikey"] = this.brewfatherApiKey;
+    json["brewfather-userkey"] = this.brewfatherUserKey;
+    // console.log("toString() " + JSON.stringify(json));
     return JSON.stringify(json);
   }
 
   parseString(s) {  
-    console.log(s);
+    // console.log(s);
     var json = JSON.parse(s);
 
     if(json["url"] != undefined)
@@ -47,6 +51,12 @@ class KegmonConfig {
 
     if(json["layout"] != undefined)
       this.layout = json["layout"];  
+
+    if(json["brewfather-apikey"] != undefined)
+      this.brewfatherApiKey = json["brewfather-apikey"];  
+
+    if(json["brewfather-userkey"] != undefined)
+      this.brewfatherUserKey = json["brewfather-userkey"];  
   }
 
   dump() {
@@ -54,6 +64,8 @@ class KegmonConfig {
     console.log("URL: " + this.url + " (" + typeof(this.url) + ")");
     console.log("Interval: " + this.interval + " (" + typeof(this.interval) + ")");
     console.log("Layout: " + this.layout + " (" + typeof(this.layout) + ")");
+    console.log("Brewfather ApiKey: " + this.brewfatherApiKey + " (" + typeof(this.brewfatherApiKey) + ")");
+    console.log("Brewfather UserKey: " + this.brewfatherUserKey + " (" + typeof(this.brewfatherUserKey) + ")");
   }
 }
 
@@ -93,9 +105,9 @@ class TapListItem {
     /* Images with color
        EBC, 2, 4, 12, 18, 24, 30, 40
     */
-    var prefix = "color-2.png";
+    var prefix = "color-0.png";
 
-    if(this.ebc >= 0 && this.ebc <= 3)
+    if(this.ebc >= 2 && this.ebc <= 3)
       prefix = "color-2.png";
     else if(this.ebc > 3 && this.ebc <= 8)
       prefix = "color-4.png";
@@ -130,12 +142,10 @@ class TapListItem {
 
   toString() {
     var json = this.toJson();
-    console.log("toString() " + JSON.stringify(json));
     return JSON.stringify(json);
   }
 
   parseString(s) {  
-    console.log(s);
     var json = JSON.parse(s);
 
     this.beer = json["beer"];
@@ -154,6 +164,10 @@ class TapListItem {
 class TapList {
   taps = { taps: [] };
 
+  clear() {
+    this.taps = { taps: [] };
+  }
+
   addTap(tap) {
     this.taps["taps"].push(tap); 
   }
@@ -165,5 +179,25 @@ class TapList {
   getTapCount() {
     return this.taps["taps"].length;
   }
+
+  toJson() {
+    return JSON.stringify(this.taps);
+  } 
+
+  toString() {
+    return this.toJson();
+  }
+
+  parseString(s) {  
+    this.taps = JSON.parse(s);
+
+    for (var i = 0; i < this.getTapCount(); i++) {
+      // Need to convert this to a a taplist class.
+      var tap = new TapListItem(); 
+      tap.parseString( JSON.stringify(this.getTaps()[i]) );
+      this.getTaps()[i] = tap;
+    }
+  }
 }
 
+// EOF

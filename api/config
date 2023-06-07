@@ -19,5 +19,7 @@
   "glass-volume2": 0.33, 
   "weight-unit": "kg",
   "volume-unit": "cl",
+  "brewfather-userkey": "userkey",
+  "brewfather-apikey": "apikey",
   "display-layout": 0
 }
