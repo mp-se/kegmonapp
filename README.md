@@ -35,7 +35,7 @@ You dont need to enter the brewfather secretes on the device. If these are defin
 
 # History
 
-* v0.4 Adding brewfather tap list integration.
+* v0.4 Adding brewfather inventory integration.
 * v0.3 Some refactoring to prepare tap list integration 
 * v0.2 Added more layout options for the dashboard
 * v0.1 First prototype
