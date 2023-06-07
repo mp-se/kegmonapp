@@ -1,29 +1,34 @@
 
-![download](https://img.shields.io/github/downloads/mp-se/kegmonapp/total) 
+![download](https://img.shields.io/docker/pulls/mpse2/kegmonapp) 
 ![release](https://img.shields.io/github/v/release/mp-se/kegmonapp?label=latest%20release)
 ![issues](https://img.shields.io/github/issues/mp-se/kegmonapp)
 ![pr](https://img.shields.io/github/issues-pr/mp-se/kegmonapp)
 
 # KegMonApp - Companion app for kegmon
 
-This is an addon for the Kegmon project. This acts as an installable web application (PWA) that can fetch and display data from any kegmon installation. 
+This is an addon for the Kegmon project. This acts as an installable web application (PWA) that can fetch and display data from any kegmon installation and from Brewfather.
 
 > Requires v0.7 or newer or the web browser will block access due to CORS.
 
 The application is shipped as a docker image to allow for installation or access.
 
-> Due to security limitation in all browsers the installation needs to be done via http:// since the kegmon does not support SSL. Its not allowed to install the app via SSL and then access non SSL resources.
+> Due to security limitation in all browsers the installation needs to be done via http:// since the kegmon does not support SSL. Its not allowed to install the app via SSL and then access non SSL resources, all browsers will block this attempt.
 
 
 # Features
 
-* Show a html5 dashboard on any device based where data is fetched from the kegmon device. This will allow for a larger screen than the oled / lcd options.
-* Show an inventory of your beers from Brewfather
+* Web based dashboard on any device based where data is fetched from the kegmon device. This will allow for a larger screen than the oled / lcd options.
+* Can be installed as an app via the browser (using PWA, Portable Web Application standard).
+* Show an inventory of your beers from Brewfather.
+* All data is stored on the local browser.
+ 
 # Brewfather integration
 
-The brewfather integration will fetch your finished brews and list them on a page. Archived brews will be ignored. This is the data that is fetched and shown on the dashboard.
+The brewfather integration will fetch your finished brews and list them on a page (they will be displayed in brew order, newest on top). Archived brews will be ignored. 
 
-* name: Default would be batch so in that case the *recipe.style.name* is used.
+This is the data that is fetched and shown on the dashboard.
+
+* name: Default would be batch so in that case the *recipe.name* is used.
 * tasteNotes: Description of the beer in the list.
 * recipe.style: Style of beer.
 * estimatedColor: EBC color, will also be used to select the appropriate image.
@@ -31,7 +36,7 @@ The brewfather integration will fetch your finished brews and list them on a pag
 * measuredAbv: ABV
 * bottlingDate: Date shown
 
-You dont need to enter the brewfather secretes on the device. If these are defined on the kegmon device these will be fetched and stored while the index.html page is open. 
+You don't need to enter the brewfather secrets on the device. If these are defined on the kegmon device these will be fetched and stored when the index.html page is opened and they are unset.
 
 # History
 
