@@ -73,6 +73,8 @@
                     data-bs-parent="#accordionSettings">
                     <div class="accordion-body">
 
+                        <h4 class="h4">Kegmon Integration</h4>
+
                         <div class="row mb-4">
                             <label for="kegmon-url" class="col-sm-4 col-form-label">Device name</label>
                             <div class="col-sm-8">
@@ -92,10 +94,10 @@
                         </div>
 
                         <div class="row mb-4">
-                            <label for="kegmon-layout" class="col-sm-4 col-form-label">Card layout</label>
+                            <label for="kegmon-layout" class="col-sm-4 col-form-label">Dashboard layout</label>
                             <div class="col-sm-8">
                                 <select class="form-select" id="kegmon-layout" name="kegmon-layout"
-                                    data-bs-toggle="tooltip" title="Select card layout">
+                                    data-bs-toggle="tooltip" title="Select card for the kegmon dashboard">
                                     <option value="1">1. Default, Simple</option>
                                     <option value="2">2. Beer images</option>
                                 </select>
@@ -103,6 +105,19 @@
                         </div>
 
                         <hr>
+
+                        <h4 class="h4">Inventory Integration</h4>
+
+                        <div class="row mb-4">
+                            <label for="kegmon-inventory-cols" class="col-sm-4 col-form-label">Inventory columns</label>
+                            <div class="col-sm-8">
+                                <select class="form-select" id="kegmon-inventory-cols" name="kegmon-inventory-cols"
+                                    data-bs-toggle="tooltip" title="How many colums to display in the inventory list">
+                                    <option value="1">Single column</option>
+                                    <option value="2">Two columns</option>
+                                </select>
+                            </div>
+                        </div>
 
                         <div class="row mb-4">
                             <label for="brewfather-apikey" class="col-sm-4 col-form-label">Brewfather api key</label>
@@ -151,6 +166,7 @@
                 appcfg.layout = $("#kegmon-layout").val();
                 appcfg.brewfatherApiKey = $("#brewfather-apikey").val();
                 appcfg.brewfatherUserKey = $("#brewfather-userkey").val();
+                appcfg.inventoryColumns = Number.parseInt($("#kegmon-inventory-cols").val());
                 appcfg.save();
             });
 
@@ -161,6 +177,7 @@
                 $("#kegmon-layout").val(appcfg.layout);
                 $("#brewfather-apikey").val(appcfg.brewfatherApiKey); 
                 $("#brewfather-userkey").val(appcfg.brewfatherUserKey);
+                $("#kegmon-inventory-cols").val(appcfg.inventoryColumns);
             }
         </script>
 </body>
