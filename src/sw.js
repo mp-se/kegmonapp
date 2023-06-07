@@ -10,6 +10,7 @@ self.addEventListener("install", evt => {
       "manifest.json",
       "kegmonapp.js",
       "sw.js",
+      "beer-${image}", // dummy image used by template
       "images/beer-color-0.png",
       "images/beer-color-2.png",
       "images/beer-color-4.png",
