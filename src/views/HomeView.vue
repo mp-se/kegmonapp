@@ -3,20 +3,31 @@
     <div class="row">
       <div class="col col-sm-6">
         <div class="card border text-bg-light border-light h-100 gy-4">
-          <KegmonCardFragment :batch="tap1" :progress="progress1" v-if="tap1 != null"></KegmonCardFragment>
+          <KegmonCardFragment
+            :batch="tap1"
+            :progress="progress1"
+            v-if="tap1 != null"
+          ></KegmonCardFragment>
         </div>
       </div>
 
       <div class="col col-sm-6">
         <div class="card border text-bg-light border-light h-100 gy-4">
-          <KegmonCardFragment :batch="tap2" :progress="progress2" v-if="tap2 != null"></KegmonCardFragment>
+          <KegmonCardFragment
+            :batch="tap2"
+            :progress="progress2"
+            v-if="tap2 != null"
+          ></KegmonCardFragment>
         </div>
       </div>
     </div>
 
     <div class="row">
-      <div class="card border text-bg-light border-light h-100 gy-4" v-for="(b, index) in brewfatherStore.batches"
-        :key="index">
+      <div
+        class="card border text-bg-light border-light h-100 gy-4"
+        v-for="(b, index) in brewfatherStore.batches"
+        :key="index"
+      >
         <BatchCardFragment :batch="b"></BatchCardFragment>
       </div>
     </div>
@@ -26,9 +37,16 @@
         <hr />
       </div>
       <div class="col-md-12">
-        <button type="button" @click="fetchBrewfather()" class="btn btn-secondary w-2" :disabled="config.brewfather_userkey == '' || config.brewfather_apikey == '' || global.disabled
-          ">
-          Fetch from brewfather</button>&nbsp;
+        <button
+          type="button"
+          @click="fetchBrewfather()"
+          class="btn btn-secondary w-2"
+          :disabled="
+            config.brewfather_userkey == '' || config.brewfather_apikey == '' || global.disabled
+          "
+        >
+          Fetch from brewfather</button
+        >&nbsp;
       </div>
     </div>
   </div>
