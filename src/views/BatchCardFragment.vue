@@ -22,6 +22,9 @@
             </div>
           </div>
           <div class="row">
+            <p></p>
+          </div>
+          <div class="row">
             <div class="col col-sm-4">
               <p class="card-text">ABV: {{ batch.abv }}%</p>
             </div>

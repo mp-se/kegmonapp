@@ -11,7 +11,9 @@
               <BsProgress :progress="progress"></BsProgress>
             </div>
           </div>
-          <div class="row"></div>
+          <div class="row">
+            <p></p>
+          </div>
           <div class="row">
             <div class="col col-sm-8">
               <p class="card-text">Glasses left: {{ batch.glasses }}</p>
