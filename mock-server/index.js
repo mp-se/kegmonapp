@@ -3,11 +3,11 @@
  *
  * (c) 2023-2024 Magnus Persson
  */
-import { createRequire } from "module";
+import { createRequire } from 'module'
 import { registerEspFwk } from './espfwk.js'
 // import { configData, statusData } from './data.js'
 
-const require = createRequire(import.meta.url);
+const require = createRequire(import.meta.url)
 const express = require('express')
 var cors = require('cors')
 
@@ -34,15 +34,17 @@ app.post('/api/push', (req, res) => {
        push_format: "http_format|http_format2|http_format3|influxdb2_format|mqtt_format"
      }
    */
-  if(!req.body.hasOwnProperty("push_format")) {
+  if (Object.prototype.hasOwnProperty.call(req.body, 'push_format')) {
     res.sendStatus(422)
     return
-  }  
+  }
   testRunning = true
-  setTimeout(() => { testRunning = false }, 5000)
+  setTimeout(() => {
+    testRunning = false
+  }, 5000)
   var data = {
     success: true,
-    message: "Test scheduled."
+    message: 'Test scheduled.'
   }
   res.type('application/json')
   res.send(data)
@@ -50,10 +52,10 @@ app.post('/api/push', (req, res) => {
 
 app.get('/api/push/status', (req, res) => {
   console.log('GET: /api/push/status')
-  /* 
-   * Description:    Return status of the current gyro calibration process. 
+  /*
+   * Description:    Return status of the current gyro calibration process.
    * Authentication: Required
-   * Limitation:     - 
+   * Limitation:     -
    * Note:           -
    * Return:         200 OK, 401 Access Denied
    */
@@ -62,13 +64,13 @@ app.get('/api/push/status', (req, res) => {
     data = {
       status: testRunning,
       success: false,
-      message: "Push test running..."
+      message: 'Push test running...'
     }
   } else {
     data = {
       status: false,
       success: true,
-      message: "Push test completed...",
+      message: 'Push test completed...',
       push_return_code: 200,
       push_enabled: true
     }
@@ -77,11 +79,11 @@ app.get('/api/push/status', (req, res) => {
   res.send(data)
 })
 
-
 app.get('/levels', (req, res) => {
   console.log('GET: /levels')
 
-  var levels = "2024-07-11 13:12:07;nan;16.587868;nan;nan\n\
+  var levels =
+    '2024-07-11 13:12:07;nan;16.587868;nan;nan\n\
 2024-07-11 13:30:14;nan;16.488798;nan;0.099069 \n\
 2024-07-11 13:30:15;nan;16.488798;nan;nan\n\
 2024-07-11 14:01:24;nan;16.291916;nan;0.196884\n\
@@ -125,7 +127,7 @@ app.get('/levels', (req, res) => {
 2024-07-15 09:53:54;nan;15.615223;nan;0.100092\n\
 2024-07-15 09:53:54;nan;15.615223;nan;nan\n\
 2024-07-16 14:37:44;nan;15.156647;nan;0.458576\n\
-2024-07-16 14:37:45;nan;15.156647;nan;nan"
+2024-07-16 14:37:45;nan;15.156647;nan;nan'
   res.send(levels)
 })
 
@@ -145,7 +147,7 @@ app.get('/api/stability', (req, res) => {
     stability_var1: 0,
     stability_popdev1: 0,
     stability_ubiasdev1: 0,
-    stability_count1: 0,    
+    stability_count1: 0,
     stability_sum2: 0,
     stability_min2: 0,
     stability_max2: 0,
@@ -153,7 +155,7 @@ app.get('/api/stability', (req, res) => {
     stability_var2: 0,
     stability_popdev2: 0,
     stability_ubiasdev2: 0,
-    stability_count2: 0,    
+    stability_count2: 0
   }
 
   res.type('application/json')
