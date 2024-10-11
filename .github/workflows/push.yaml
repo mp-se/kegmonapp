@@ -2,7 +2,9 @@ name: push
 
 on:
   push:
-    branches: master
+    branches:
+      - master
+      - '1.0'
   release:
     types: [published]
 
