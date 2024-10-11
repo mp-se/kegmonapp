@@ -29,10 +29,9 @@ This is the data that is fetched and shown on the dashboard.
 - name: Default would be batch so in that case the _recipe.name_ is used.
 - tasteNotes: Description of the beer in the list.
 - recipe.style: Style of beer.
-- estimatedColor: EBC color, will also be used to select the appropriate image.
-- recepie.estimatedIbu: IBU
-- recepie.measuredAbv: ABV
-- bottlingDate: Date shown
+- recipe.color: EBC color, will also be used to select the appropriate image.
+- recipe.ibu: IBU
+- recipe.abv: ABV
 
 You don't need to enter the brewfather secrets on the device. If these are defined on the kegmon device these will be fetched and stored when the index.html page is opened and they are unset.
 
