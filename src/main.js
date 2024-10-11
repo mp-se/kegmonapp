@@ -15,12 +15,14 @@ import BsInputBase from '@/components/BsInputBase.vue'
 import BsInputText from '@/components/BsInputText.vue'
 import BsInputRadio from '@/components/BsInputRadio.vue'
 import BsModalConfirm from '@/components/BsModalConfirm.vue'
+import BsProgress from '@/components/BsProgress.vue'
 
 app.component('BsMessage', BsMessage)
 app.component('BsInputBase', BsInputBase)
 app.component('BsInputText', BsInputText)
 app.component('BsInputRadio', BsInputRadio)
 app.component('BsModalConfirm', BsModalConfirm)
+app.component('BsProgress', BsProgress)
 
 import IconHome from './components/IconHome.vue'
 import IconTools from './components/IconTools.vue'

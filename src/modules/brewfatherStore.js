@@ -13,6 +13,10 @@ export class BrewfatherBatch {
     this.ibu = ibu === undefined ? 0 : ibu
     this.brewfatherId = brewfatherId === undefined ? '' : brewfatherId
     this.description = description === undefined ? '' : description
+
+    this.glasses = 0
+    this.beerVolume = 0
+    this.kegVolume = 0
   }
 
   static fromJson(d) {
@@ -56,6 +60,15 @@ export class BrewfatherBatch {
   get description() {
     return this._description
   }
+  get glasses() {
+    return this._glasses
+  }
+  get beerVolume() {
+    return this._beerVolume
+  }
+  get kegVolume() {
+    return this._kegVolume
+  }
 
   set brewfatherId(brewfatherId) {
     this._brewfatherId = brewfatherId
@@ -83,6 +96,15 @@ export class BrewfatherBatch {
   }
   set description(description) {
     this._description = description
+  }
+  set glasses(glasses) {
+    this._glasses = glasses
+  }
+  set beerVolume(beerVolume) {
+    this._beerVolume = beerVolume
+  }
+  set kegVolume(kegVolume) {
+    this._kegVolume = kegVolume
   }
 }
 

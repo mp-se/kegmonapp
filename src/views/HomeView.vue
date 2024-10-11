@@ -1,16 +1,15 @@
 <template>
   <div class="container">
-
     <div class="row">
       <div class="col col-sm-6">
         <div class="card border text-bg-light border-light h-100 gy-4">
-          <KegmonCardFragment :batch="tap1" v-if="tap1 != null"></KegmonCardFragment>
+          <KegmonCardFragment :batch="tap1" :progress="progress1" v-if="tap1 != null"></KegmonCardFragment>
         </div>
       </div>
 
       <div class="col col-sm-6">
         <div class="card border text-bg-light border-light h-100 gy-4">
-          <KegmonCardFragment :batch="tap2" v-if="tap2 != null"></KegmonCardFragment>
+          <KegmonCardFragment :batch="tap2" :progress="progress2" v-if="tap2 != null"></KegmonCardFragment>
         </div>
       </div>
     </div>
@@ -38,7 +37,7 @@
 <script setup>
 import { brewfatherStore, global, config } from '@/modules/pinia'
 import { logDebug, logError } from '@/modules/logger'
-import { onMounted, onBeforeUnmount, ref } from 'vue'
+import { onMounted, onBeforeUnmount, ref, computed } from 'vue'
 import BatchCardFragment from '@/views/BatchCardFragment.vue'
 import KegmonCardFragment from '@/views/KegmonCardFragment.vue'
 import { BrewfatherBatch } from '@/modules/brewfatherStore'
@@ -47,13 +46,28 @@ const polling = ref(null)
 const tap1 = ref(null)
 const tap2 = ref(null)
 
+const progress1 = computed(() => {
+  logDebug(tap1.value)
+  if (tap1.value == null || tap1.value.kegVolume == 0) return 0
+  return (tap1.value.beerVolume / tap1.value.kegVolume) * 100
+})
+
+const progress2 = computed(() => {
+  logDebug(tap2.value)
+  if (tap2.value == null || tap2.value.kegVolume == 0) return 0
+  return (tap2.value.beerVolume / tap2.value.kegVolume) * 100
+})
+
 onBeforeUnmount(() => {
-  if (polling.value != null)
-    clearInterval(polling.value)
+  if (polling.value != null) clearInterval(polling.value)
 })
 
 function fetchStatus() {
+  logDebug('HomeView.fetchStatus()')
+
   global.clearMessages()
+
+  if (config.kegmon_url == '') return
 
   fetch(config.kegmon_url + 'api/status', {
     method: 'GET',
@@ -62,10 +76,18 @@ function fetchStatus() {
     .then((res) => res.json())
     .then((json) => {
       logDebug('HomeView.fetchStatus()', json)
-      //status.value = json
 
-      // TODO: Add status info on remaning volume
+      if (tap1.value != null) {
+        tap1.value.glasses = json.glass1
+        tap1.value.beerVolume = json.beer_volume1
+        tap1.value.kegVolume = json.keg_volume1
+      }
 
+      if (tap1.value != null) {
+        tap2.value.glasses = json.glass2
+        tap2.value.beerVolume = json.beer_volume2
+        tap2.value.kegVolume = json.keg_volume2
+      }
     })
     .catch((err) => {
       logError('HomeView.fetchStatus()', err)
@@ -77,8 +99,13 @@ onMounted(() => {
   logDebug('HomeView.onMounted()')
   polling.value = setInterval(fetchStatus, 5000)
 
+  if (config.kegmon_url == '') {
+    global.messageError = 'No url to kegmon device is specified, go to settings.'
+    return
+  }
+
   var base = btoa('kegmon:password')
-  var token = ""
+  var token = ''
 
   fetch(config.kegmon_url + 'api/auth', {
     method: 'GET',
@@ -98,8 +125,28 @@ onMounted(() => {
         .then((json) => {
           logDebug('HomeView.onMounted()', json)
 
-          tap1.value = new BrewfatherBatch("", json.beer_name1, "", "", "", json.beer_abv1, json.beer_ebc1, json.beer_ibu1, "")
-          tap2.value = new BrewfatherBatch("", json.beer_name2, "", "", "", json.beer_abv2, json.beer_ebc2, json.beer_ibu2, "")
+          tap1.value = new BrewfatherBatch(
+            '',
+            json.beer_name1,
+            '',
+            '',
+            '',
+            json.beer_abv1,
+            json.beer_ebc1,
+            json.beer_ibu1,
+            ''
+          )
+          tap2.value = new BrewfatherBatch(
+            '',
+            json.beer_name2,
+            '',
+            '',
+            '',
+            json.beer_abv2,
+            json.beer_ebc2,
+            json.beer_ibu2,
+            ''
+          )
 
           global.disabled = false
         })
@@ -108,7 +155,6 @@ onMounted(() => {
           logError('HomeView.onMounted()', err)
           global.messageError = 'Failed to fetch configuration from Kegmon device'
         })
-
     })
     .catch((err) => {
       logError('HomeView.importSettingsFromKegmon()', err)

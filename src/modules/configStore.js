@@ -19,10 +19,12 @@ export const useConfigStore = defineStore('config', {
       this.brewfather_apikey = localStorage.getItem('brewfather_apikey')
       this.brewfather_userkey = localStorage.getItem('brewfather_userkey')
 
-      if (this.dark_mode === undefined) this.dark_mode = false
-      if (this.kegmon_url === undefined) this.kegmon_url = ''
-      if (this.brewfather_apikey === undefined) this.brewfather_apikey = ''
-      if (this.brewfather_userkey === undefined) this.brewfather_userkey = ''
+      if (this.dark_mode === undefined || this.dark_mode === null) this.dark_mode = false
+      if (this.kegmon_url === undefined || this.kegmon_url === null) this.kegmon_url = ''
+      if (this.brewfather_apikey === undefined || this.brewfather_apikey === null)
+        this.brewfather_apikey = ''
+      if (this.brewfather_userkey === undefined || this.brewfather_userkey === null)
+        this.brewfather_userkey = ''
     },
     save() {
       logDebug('configStore.save()')
